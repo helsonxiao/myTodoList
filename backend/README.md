@@ -5,7 +5,7 @@ Open `requirements.txt` to see the left.
 
 ## How to run it
 * `pip install -r requirements.txt`
-* python manage.py runserver
+* `python manage.py runserver`
 
 Make sure backend and frontend services are both working.
 
