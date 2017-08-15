@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './dev/index',
+    entry: './dev/TodoApp',
 
     output: {
         filename: 'bundle.js',
@@ -20,11 +20,11 @@ module.exports = {
     module: {
         loaders: [
             {
+                loader: 'babel-loader',
                 test: /\.jsx?$/,
                 //node_modules would take a long time
                 exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
+                options: {
                     //specify that we will be dealing with React code
                     presets: ['react']
                 }
