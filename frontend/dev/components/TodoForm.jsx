@@ -9,22 +9,33 @@ import TodoFilter from './TodoFilter';
 export default class TodoForm extends React.Component{
     constructor(props) {
         super(props);
-        this.apiUrl = 'http://127.0.0.1:8000/api/tasks';
+        this.apiUrl = 'http://127.0.0.1:8000/api/tasks/';
         this.state = {
             data: [],
             dataCache: []
         }
+        this.load = this.load.bind(this);
         this.show = this.show.bind(this);
         this.create = this.create.bind(this);
+        this.edit = this.edit.bind(this);
+    }
+
+    load() {
+        axios.get(this.apiUrl)
+        .then( (response) => {
+            this.setState({
+                data: response.data.results,
+                dataCache: response.data.results
+            });
+        })
+        .catch( (error) => {
+           console.log('load err!');
+        });
+        
     }
 
     componentDidMount() {
-        axios.get(this.apiUrl).then( (res) => {
-            this.setState({
-                data: res.data.results,
-                dataCache: res.data.results
-            });
-        });
+        this.load();
     }
     
     show(residue) {
@@ -33,14 +44,33 @@ export default class TodoForm extends React.Component{
     
     create(newTodo) { // 待测试
         axios.post(this.apiUrl, newTodo)
-            .then( (res) => { this.setState({
-                data: this.state.data.push(res.data),
-                dataCache: this.state.dataCache.push(res.data)
+            .then( (response) => {
+                console.log(response.data);
+                this.setState({
+                    data: this.state.data.push(response.data),
+                    dataCache: this.state.dataCache.push(response.data)
+                });
             })
-            .catch( (err) => {
-                console.log(err);
+            .catch( (error) => {
+                console.log('create err!');
             });
+    }
+    
+    edit(todo) {
+        axios({
+          method: 'patch',
+          url: `${this.apiUrl}${todo.id}`,
+          data: {
+            done: todo.done
+          }
+        })
+        .then( (response) => {
+           console.log(response.data);
+        })
+        .catch( (error) => {
+            console.log('edit err!');
         });
+        this.load();
     }
     
     render() {
@@ -50,7 +80,9 @@ export default class TodoForm extends React.Component{
                     todos={this.state.dataCache}
                     show={this.show} />
                 <NewTodo create={this.create} />
-                <TodoList todos={this.state.data} />
+                <TodoList 
+                    todos={this.state.data}
+                    edit={this.edit} />
             </div>
         );
     }
