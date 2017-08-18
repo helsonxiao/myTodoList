@@ -14,11 +14,15 @@ export default class TodoForm extends React.Component{
             residue: [],
             todos: [],
             show: false,
-            todoId: ''            
+            editing: false,
+            currentId: 0,
+            idNum: 0
         }
         this.load = this.load.bind(this);
+        this.countId = this.countId.bind(this);
         this.showDetail = this.showDetail.bind(this);
         this.showList = this.showList.bind(this);
+        this.showCreate = this.showCreate.bind(this);
         this.create = this.create.bind(this);
         this.edit = this.edit.bind(this);
     }
@@ -28,7 +32,6 @@ export default class TodoForm extends React.Component{
 			url: this.apiUrl,
 			type: 'GET',
 			dataType: 'JSON',
-//            async: false,
 			success: function(data) {
                 this.setState({
                     residue: data.results,
@@ -48,7 +51,7 @@ export default class TodoForm extends React.Component{
     showDetail(detailState, detailId) {
         this.setState({
             show: detailState,
-            todoId: detailId
+            currentId: detailId
         });
     }
     
@@ -68,14 +71,44 @@ export default class TodoForm extends React.Component{
             show: false
         });
     }
-    
-    // 待完成
-    create(newTodo) {
 
+    showCreate() {
+        this.setState({
+            editing: true
+        });
+    }
+
+    countId() {
+//        this.load();
+        var length = this.state.todos.length;
+        var idNum = this.state.todos[length-1].id;
+        this.setState({
+            idNum: idNum
+        });
+    }
+
+    create(newTodo) {
+//        this.state.todos.push(newTodo);
+//        this.setState({
+//            todos: this.state.todos,
+//            show: false,
+//            editing: false
+//        });
+        $.ajax({
+            url: this.apiUrl,
+            type: 'POST',
+            dataType: 'JSON',
+            data: newTodo,
+            error: function() {
+                console.log('post err!')
+            }.bind(this)
+        });
+        this.load();
+        this.showList(false);
     }
     
-    // 改变标记状态
-    edit(todo, todos) {
+    // 改变标记状态，待补充
+    edit(todo) {
 		$.ajax({
 			url: `${this.apiUrl}${todo.id}`,
 			type: 'PATCH',
@@ -98,13 +131,17 @@ export default class TodoForm extends React.Component{
             <div>
                 <TodoFilter
                     showList={this.showList}/>
-                <NewTodo create={this.create}/>
+                <NewTodo
+                    create={this.create}
+                    editing={this.state.editing}
+                    showCreate={this.showCreate}
+                    idNum={this.state.idNum}
+                    countId={this.countId}/>
                 <TodoList
-                    todos={this.state.todos}
                     residue={this.state.residue}
                     edit={this.edit}
                     show={this.state.show}
-                    todoId={this.state.todoId}
+                    currentId={this.state.currentId}
                     showDetail={this.showDetail}
                     load={this.load}/>
             </div>

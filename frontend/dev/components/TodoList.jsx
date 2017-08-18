@@ -16,14 +16,13 @@ export default class TodoList extends React.Component{
         });
         
         if (this.props.show) {
-            var todo = residue.find(t => t.id == this.props.todoId);
+            var todo = residue.find(t => t.id == this.props.currentId);
             
             return (
                 <div>
                     <ul>{titles}</ul>
                     <Todo
                         todo={todo}
-                        todos={this.props.todos}
                         edit={this.props.edit}/>
                 </div>
             );

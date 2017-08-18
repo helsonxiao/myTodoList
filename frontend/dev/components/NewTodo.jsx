@@ -4,32 +4,46 @@ import React from 'react';
 export default class NewTodo extends React.Component{
     constructor(props){
         super(props);
-        this.state = {
-            editing: false
-        }
-        this.createForm = this.createForm.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
-    
-    showForm() { // 表单制作待学习
-        if (editing) {
+
+    handleClick() {
+        this.props.showCreate();
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        this.props.countId();
+        var newTodo = {
+            title: this.refs.titleInput.value,
+            text: this.refs.textInput.value,
+            priority: this.refs.priorityInput.value,
+            deadline: this.refs.deadlineInput.value,
+            done: false,
+            id: this.props.idNum,
+            url: `http://127.0.0.1:8000/api/tasks/${this.props.idNum}`
+        }
+        this.props.create(newTodo);
+    }
+
+    render() {
+        if (!this.props.editing){
+            return <button onClick={this.handleClick}>Create</button>
+        } else {
             return (
-                <form>
-                    <input type="text" placeholder="I am a title." ref="titleInput" />
-                    
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" placeholder="Title" ref="titleInput" />
+                    <input type="text" placeholder="Text" ref="textInput" />
+                    <input type="date" ref="deadlineInput" />
+                    <select ref="priorityInput">
+                        <option value="1">一般</option>
+                        <option value="2">重要</option>
+                        <option value="3">紧急</option>
+                    </select>
+                    <input type="submit" value="Submit" />
                 </form>
             );
-        } else {
-            return;
         }
-    }
-    
-    createForm() {
-        this.state.editing = true;
-    }
-    
-    render() {
-        return (
-            <button onClick={this.createForm}>Create</button>
-        );
     }
 }

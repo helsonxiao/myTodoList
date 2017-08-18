@@ -23,6 +23,7 @@ export default class Todo extends React.Component{
             <div>
                 <h3>{todo.title}</h3>
                 <p>{todo.text}</p>
+                <p>{todo.deadline}</p>
                 <button 
                     onClick={ () => this.toggleDone(todo) }>
                     {toggle}</button>
