@@ -6,38 +6,27 @@ export default class TodoFilter extends React.Component{
         super(props);
         this.handleAll = this.handleAll.bind(this);
         this.handleTodo = this.handleTodo.bind(this);
+        this.handleCompleted = this.handleCompleted.bind(this);
     }
     
-    handleAll(todos) {
-        this.props.show(todos);
+    handleAll() {
+        this.props.showList('');
     }
     
-    handleTodo(todos) {
-        var residue = [];
-        todos.map( (todo) => {
-            if (todo.done === false){
-                residue.push(todo);
-            }
-        });
-        this.props.show(residue);
+    handleTodo() {
+        this.props.showList(false);
     }
     
-    handleCompleted(todos) {
-        var residue = [];
-        todos.map( (todo) => {
-            if (todo.done === true){
-                residue.push(todo);
-            }
-        });
-        this.props.show(residue);
+    handleCompleted() {
+        this.props.showList(true);
     }
     
     render() {
         return(
             <ul className="nav nav-tabs">
-                <li role="presentation" onClick={ () => this.handleAll(this.props.todos) }><a href="#">All</a></li>
-                <li role="presentation" onClick={ () => this.handleTodo(this.props.todos) }><a href="#">Todo</a></li>
-                <li role="presentation" onClick={ () => this.handleCompleted(this.props.todos) }><a href="#">Completed</a></li>
+                <li role="presentation" onClick={ () => this.handleAll() }><a href="#">All</a></li>
+                <li role="presentation" onClick={ () => this.handleTodo() }><a href="#">Todo</a></li>
+                <li role="presentation" onClick={ () => this.handleCompleted() }><a href="#">Completed</a></li>
             </ul>
         );
     }

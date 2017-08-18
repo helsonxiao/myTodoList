@@ -8,7 +8,7 @@ export default class Todo extends React.Component{
     
     toggleDone(todo) {
         todo.done = !todo.done;
-        this.props.edit(todo);
+        this.props.edit(todo, this.props.todos);
     }
     
     render() {
