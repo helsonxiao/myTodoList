@@ -1,6 +1,7 @@
 import React from 'react';
 import Todo from './Todo';
 
+
 export default class TodoList extends React.Component{
     render() {
         var residue = this.props.residue;
@@ -15,7 +16,7 @@ export default class TodoList extends React.Component{
             )
         });
         
-        if (this.props.show) {
+        if (this.props.isOpening) {
             var todo = residue.find(t => t.id == this.props.currentId);
             
             return (
@@ -23,7 +24,10 @@ export default class TodoList extends React.Component{
                     <ul>{titles}</ul>
                     <Todo
                         todo={todo}
-                        edit={this.props.edit}/>
+                        edit={this.props.edit}
+                        delete={this.props.delete}
+                        isEditing={this.props.isEditing}
+                        showEdit={this.props.showEdit}/>
                 </div>
             );
         } else {

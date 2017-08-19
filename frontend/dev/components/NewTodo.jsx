@@ -9,27 +9,31 @@ export default class NewTodo extends React.Component{
     }
 
     handleClick() {
-        this.props.showCreate();
+        this.props.showAdd();
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.countId();
-        var newTodo = {
-            title: this.refs.titleInput.value,
-            text: this.refs.textInput.value,
-            priority: this.refs.priorityInput.value,
-            deadline: this.refs.deadlineInput.value,
-            done: false,
-            id: this.props.idNum,
-            url: `http://127.0.0.1:8000/api/tasks/${this.props.idNum}`
+        if (this.refs.deadlineInput.value === "") {
+            var deadline = null;
+        } else {
+            var deadline = this.refs.deadlineInput.value;
         }
-        this.props.create(newTodo);
+        var priority = parseInt(this.refs.priorityInput.value);
+        var newTodo = {
+            "title": this.refs.titleInput.value,
+            "priority": priority,
+            "done": false,
+            "text": this.refs.textInput.value,
+            "deadline": deadline
+        };
+        console.log(newTodo);
+        this.props.add(newTodo);
     }
 
     render() {
-        if (!this.props.editing){
-            return <button onClick={this.handleClick}>Create</button>
+        if (!this.props.isAdding){
+            return <button onClick={this.handleClick}>Add</button>
         } else {
             return (
                 <form onSubmit={this.handleSubmit}>
@@ -42,6 +46,7 @@ export default class NewTodo extends React.Component{
                         <option value="3">紧急</option>
                     </select>
                     <input type="submit" value="Submit" />
+                    <button onClick={this.props.showAdd}>Cancel</button>
                 </form>
             );
         }

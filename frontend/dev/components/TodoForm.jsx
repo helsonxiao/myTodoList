@@ -13,29 +13,33 @@ export default class TodoForm extends React.Component{
         this.state = {
             residue: [],
             todos: [],
-            show: false,
-            editing: false,
-            currentId: 0,
-            idNum: 0
+            isOpening: false,
+            isAdding: false,
+            isEditing: false,
+            currentId: 0
         }
         this.load = this.load.bind(this);
-        this.countId = this.countId.bind(this);
+        this.add = this.add.bind(this);
+        this.edit = this.edit.bind(this);
+        this.delete = this.delete.bind(this);
         this.showDetail = this.showDetail.bind(this);
         this.showList = this.showList.bind(this);
-        this.showCreate = this.showCreate.bind(this);
-        this.create = this.create.bind(this);
-        this.edit = this.edit.bind(this);
+        this.showAdd = this.showAdd.bind(this);
+        this.showEdit = this.showEdit.bind(this);
     }
 
     load() { 
 		$.ajax({
 			url: this.apiUrl,
-			type: 'GET',
-			dataType: 'JSON',
+			type: 'get',
+			dataType: 'json',
+//			async: false,
 			success: function(data) {
                 this.setState({
-                    residue: data.results,
-                    todos: data.results
+                    residue: data,
+                    todos: data
+//                    residue: data.results,
+//                    todos: data.results
                 });
 			}.bind(this),
 			error: function() {
@@ -47,10 +51,58 @@ export default class TodoForm extends React.Component{
     componentDidMount() {
         this.load();
     }
-    
+
+    add(newTodo) {
+        $.ajax({
+            url: this.apiUrl,
+            type: 'post',
+            dataType: 'json',
+            async: false,
+            data: newTodo,
+            success: function(data) {
+                console.log(data);
+                this.state.todos.push(data);
+                this.setState({
+                    todos: this.state.todos,
+                    isOpening: false,
+                    isAdding: false
+                });
+            }.bind(this),
+            error: function() {
+                console.log('add err!')
+            }.bind(this)
+        });
+        this.showList(false);
+    }
+
+    edit(todo) {
+		$.ajax({
+			url: `${this.apiUrl}${todo.id}`,
+			type: 'put',
+			dataType: 'json',
+            async: false,
+            data: todo,
+			success: function(data) {
+                this.setState({
+                    isOpening: false
+                });
+			}.bind(this)
+		});
+        this.showList(todo.done);
+        console.log(todo);
+    }
+
+    delete(todo) {
+        $.ajax({
+            url: `${this.apiUrl}${todo.id}`,
+            type: 'delete',
+
+        });
+    }
+
     showDetail(detailState, detailId) {
         this.setState({
-            show: detailState,
+            isOpening: detailState,
             currentId: detailId
         });
     }
@@ -68,79 +120,37 @@ export default class TodoForm extends React.Component{
         }
         this.setState({
             residue: residue,
-            show: false
+            isOpening: false
         });
     }
 
-    showCreate() {
+    showEdit() {
         this.setState({
-            editing: true
+            isEditing: !this.state.isEditing
         });
     }
 
-    countId() {
-//        this.load();
-        var length = this.state.todos.length;
-        var idNum = this.state.todos[length-1].id;
+    showAdd() {
         this.setState({
-            idNum: idNum
+            isAdding: !this.state.isAdding
         });
     }
 
-    create(newTodo) {
-//        this.state.todos.push(newTodo);
-//        this.setState({
-//            todos: this.state.todos,
-//            show: false,
-//            editing: false
-//        });
-        $.ajax({
-            url: this.apiUrl,
-            type: 'POST',
-            dataType: 'JSON',
-            data: newTodo,
-            error: function() {
-                console.log('post err!')
-            }.bind(this)
-        });
-        this.load();
-        this.showList(false);
-    }
-    
-    // 改变标记状态，待补充
-    edit(todo) {
-		$.ajax({
-			url: `${this.apiUrl}${todo.id}`,
-			type: 'PATCH',
-			dataType: ' JSON',
-            async: false,
-            data: {
-                done: todo.done
-            },
-			success: function(data) {
-                this.setState({
-                    show: false
-                });
-			}.bind(this)
-		});
-        this.showList(todo.done);
-    }
-    
     render() {
         return(
             <div>
                 <TodoFilter
                     showList={this.showList}/>
                 <NewTodo
-                    create={this.create}
-                    editing={this.state.editing}
-                    showCreate={this.showCreate}
-                    idNum={this.state.idNum}
-                    countId={this.countId}/>
+                    add={this.add}
+                    isAdding={this.state.isAdding}
+                    showAdd={this.showAdd}/>
                 <TodoList
                     residue={this.state.residue}
                     edit={this.edit}
-                    show={this.state.show}
+                    isEditing={this.state.isEditing}
+                    showEdit={this.showEdit}
+                    isOpening={this.state.isOpening}
                     currentId={this.state.currentId}
                     showDetail={this.showDetail}
                     load={this.load}/>
