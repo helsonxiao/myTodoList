@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 
 def validate_priority(value):
-    if value not in ['1', '2', '3']:
+    if value not in [1, 2, 3]:
         raise ValidationError("Only three levels for priority. They are 1, 2, 3.")
 
 
