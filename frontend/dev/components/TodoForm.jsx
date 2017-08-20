@@ -16,7 +16,7 @@ export default class TodoForm extends React.Component{
             isOpening: false,
             isAdding: false,
             isEditing: false,
-            currentId: 0
+            currentTodo: {}
         }
         this.load = this.load.bind(this);
         this.add = this.add.bind(this);
@@ -62,7 +62,6 @@ export default class TodoForm extends React.Component{
                 this.state.todos.push(data);
                 this.setState({
                     todos: this.state.todos,
-                    isOpening: false,
                     isAdding: false
                 });
                 this.showList(false);
@@ -80,8 +79,11 @@ export default class TodoForm extends React.Component{
 			dataType: 'json',
             data: todo,
 			success: function(data) {
+			    var currentTodoIndex = this.state.todos.indexOf(this.state.currentTodo);
+			    this.state.todos.splice(currentTodoIndex, 1, data);
                 this.setState({
-                    isOpening: false
+                    todos: this.state.todos,
+                    currentTodo: data
                 });
                 this.showList(todo.done);
 			}.bind(this)
@@ -104,10 +106,10 @@ export default class TodoForm extends React.Component{
         });
     }
 
-    showDetail(detailState, detailId) {
+    showDetail(isOpening, currentTodo) {
         this.setState({
-            isOpening: detailState,
-            currentId: detailId
+            isOpening: isOpening,
+            currentTodo: currentTodo
         });
     }
     
@@ -124,7 +126,7 @@ export default class TodoForm extends React.Component{
         }
         this.setState({
             residue: residue,
-            isOpening: false
+//            isOpening: false
         });
     }
 
@@ -155,7 +157,7 @@ export default class TodoForm extends React.Component{
                     isEditing={this.state.isEditing}
                     showEdit={this.showEdit}
                     isOpening={this.state.isOpening}
-                    currentId={this.state.currentId}
+                    currentTodo={this.state.currentTodo}
                     showDetail={this.showDetail}
                     load={this.load}
                     delete={this.delete}/>

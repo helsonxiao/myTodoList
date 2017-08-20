@@ -10,14 +10,14 @@ export default class TodoList extends React.Component{
                <li
                 key={todo.id}
                 onClick={ () => {
-                       this.props.showDetail(true, todo.id);
+                       this.props.showDetail(true, todo);
                 }}>
                 {todo.title}</li>
             )
         });
         
         if (this.props.isOpening) {
-            var todo = residue.find(t => t.id == this.props.currentId);
+            var todo = this.props.currentTodo;
             
             return (
                 <div>

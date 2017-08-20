@@ -14,7 +14,7 @@ export default class Todo extends React.Component{
         } else {
             var deadline = this.refs.deadlineInput.value;
         }
-        var priority = parseInt(this.refs.priorityInput.value);
+        var priority = this.refs.priorityInput.value;
         todo.title = this.refs.titleInput.value;
         todo.priority = priority;
         todo.text = this.refs.textInput.value;
@@ -55,9 +55,9 @@ export default class Todo extends React.Component{
                     <label>内容：<input type="text" defaultValue={todo.text} ref="textInput" /></label>
                     <label>截止日期：<input type="date" defaultValue={todo.deadline} ref="deadlineInput" /></label>
                     <label>优先级：<select ref="priorityInput">
-                        <option value="1">一般</option>
-                        <option value="2">重要</option>
-                        <option value="3">紧急</option>
+                        <option value="1">低</option>
+                        <option value="2">中</option>
+                        <option value="3">高</option>
                     </select></label>
                     <input type="submit" value="Submit" />
                     <button onClick={this.props.showEdit}>Cancel</button>
