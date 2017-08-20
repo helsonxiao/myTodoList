@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import NewTodo from './NewTodo';
-import TodoList from './TodoList';
-import TodoFilter from './TodoFilter';
+import TodoFilterContainer from './TodoFilterContainer';
+import NewTodoContainer from './NewTodoContainer';
+import TodoListContainer from './TodoListContainer';
+import TodoContainer from './TodoContainer';
 
-
-export default class TodoForm extends React.Component{
+class AppContainer extends React.Component{
     constructor(props) {
         super(props);
         this.apiUrl = 'http://127.0.0.1:8000/api/tasks/';
@@ -28,7 +28,7 @@ export default class TodoForm extends React.Component{
         this.toggleEdit = this.toggleEdit.bind(this);
     }
 
-    load() { 
+    load() {
         $.ajax({
             url: this.apiUrl,
             type: 'get',
@@ -60,11 +60,10 @@ export default class TodoForm extends React.Component{
                 this.state.todos.push(data);
                 this.setState({
                     todos: this.state.todos,
-                    isAdding: false,
                     isOpening: true,
                     currentTodo: data
                 });
-                this.showResidue(false);
+                this.showResidue(newTodo.done);
             }.bind(this),
             error: function() {
                 console.log('add err!')
@@ -72,47 +71,47 @@ export default class TodoForm extends React.Component{
         });
     }
 
-    edit(todo) {
+    edit(currentTodo) {
         $.ajax({
-            url: `${this.apiUrl}${todo.id}`,
+            url: `${this.apiUrl}${currentTodo.id}`,
             type: 'put',
             dataType: 'json',
-            data: todo,
+            data: currentTodo,
             success: function(data) {
-                var currentTodoIndex = this.state.todos.indexOf(this.state.currentTodo);
+                var currentTodoIndex = this.state.todos.indexOf(currentTodo);
                 this.state.todos.splice(currentTodoIndex, 1, data);
                 this.setState({
                     todos: this.state.todos,
                     currentTodo: data
                 });
-                this.showResidue(todo.done);
+                this.showResidue(currentTodo.done);
             }.bind(this)
         });
     }
 
-    delete(todo) {
+    delete(currentTodo) {
         $.ajax({
-            url: `${this.apiUrl}${todo.id}`,
+            url: `${this.apiUrl}${currentTodo.id}`,
             type: 'delete',
             success: function() {
-                var todoIndex = this.state.todos.indexOf(todo);
-                this.state.todos.splice(todoIndex, 1);
+                var currentTodoIndex = this.state.todos.indexOf(currentTodo);
+                this.state.todos.splice(currentTodoIndex, 1);
                 this.setState({
                     todos: this.state.todos,
                     isOpening: false
                 });
-                this.showResidue(todo.done);
+                this.showResidue(currentTodo.done);
             }.bind(this)
         });
     }
 
-    showDetail(isOpening, currentTodo) {
+    showDetail(currentTodo) {
         this.setState({
-            isOpening: isOpening,
+            isOpening: true,
             currentTodo: currentTodo
         });
     }
-    
+
     showResidue(TOF) {
         var residue = [];
         if (TOF === ''){
@@ -144,23 +143,28 @@ export default class TodoForm extends React.Component{
     render() {
         return(
             <div>
-                <TodoFilter
+                <TodoFilterContainer
                     showResidue={this.showResidue}/>
-                <NewTodo
+                <NewTodoContainer
                     add={this.add}
                     isAdding={this.state.isAdding}
                     toggleAdd={this.toggleAdd}/>
-                <TodoList
+                <TodoListContainer
                     residue={this.state.residue}
-                    edit={this.edit}
-                    isEditing={this.state.isEditing}
-                    toggleEdit={this.toggleEdit}
+                    showDetail={this.showDetail}/>
+                <TodoContainer
                     isOpening={this.state.isOpening}
                     currentTodo={this.state.currentTodo}
-                    showDetail={this.showDetail}
-                    load={this.load}
-                    delete={this.delete}/>
+                    isEditing={this.state.isEditing}
+                    toggleEdit={this.toggleEdit}
+                    delete={this.delete}
+                    edit={this.edit}/>
             </div>
         );
     }
 }
+
+ReactDOM.render(
+    <AppContainer />,
+    document.getElementById('app')
+);

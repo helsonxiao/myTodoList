@@ -1,45 +1,20 @@
 import React from 'react';
 
-
 export default class NewTodo extends React.Component{
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick() {
-        this.props.toggleAdd();
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        if (this.refs.deadlineInput.value === "") {
-            var deadline = null;
-        } else {
-            var deadline = this.refs.deadlineInput.value;
-        }
-        var priority = parseInt(this.refs.priorityInput.value);
-        var newTodo = {
-            "title": this.refs.titleInput.value,
-            "priority": priority,
-            "done": false,
-            "text": this.refs.textInput.value,
-            "deadline": deadline
-        };
-        this.props.add(newTodo);
     }
 
     render() {
         if (!this.props.isAdding){
-            return <button onClick={this.handleClick}>Add</button>
+            return <button onClick={this.props.handleClick}>Add</button>
         } else {
             return (
-                <form onSubmit={this.handleSubmit}>
-                    <input type="text" placeholder="Title" ref="titleInput" />
-                    <input type="text" placeholder="Text" ref="textInput" />
-                    <input type="date" ref="deadlineInput" />
-                    <select ref="priorityInput">
+                <form onSubmit={ () => this.props.handleSubmit(event, this.refs) }>
+                    <input type="text" name="Title" ref="titleInput" />
+                    <input type="text" name="Text" ref="textInput" />
+                    <input type="date" name="Deadline" ref="deadlineInput" />
+                    <select name="Priority" ref="priorityInput">
                         <option value="1">一般</option>
                         <option value="2">重要</option>
                         <option value="3">紧急</option>
