@@ -23,28 +23,26 @@ export default class TodoForm extends React.Component{
         this.edit = this.edit.bind(this);
         this.delete = this.delete.bind(this);
         this.showDetail = this.showDetail.bind(this);
-        this.showList = this.showList.bind(this);
-        this.showAdd = this.showAdd.bind(this);
-        this.showEdit = this.showEdit.bind(this);
+        this.showResidue = this.showResidue.bind(this);
+        this.toggleAdd = this.toggleAdd.bind(this);
+        this.toggleEdit = this.toggleEdit.bind(this);
     }
 
     load() { 
-		$.ajax({
-			url: this.apiUrl,
-			type: 'get',
-			dataType: 'json',
-			success: function(data) {
+        $.ajax({
+            url: this.apiUrl,
+            type: 'get',
+            dataType: 'json',
+            success: function(data) {
                 this.setState({
                     residue: data,
                     todos: data
-//                    residue: data.results,
-//                    todos: data.results
                 });
-			}.bind(this),
-			error: function() {
-			    console.log('load err!');
-			}.bind(this)
-		});
+            }.bind(this),
+            error: function() {
+                console.log('load err!');
+            }.bind(this)
+        });
     }
 
     componentDidMount() {
@@ -66,7 +64,7 @@ export default class TodoForm extends React.Component{
                     isOpening: true,
                     currentTodo: data
                 });
-                this.showList(false);
+                this.showResidue(false);
             }.bind(this),
             error: function() {
                 console.log('add err!')
@@ -75,21 +73,21 @@ export default class TodoForm extends React.Component{
     }
 
     edit(todo) {
-		$.ajax({
-			url: `${this.apiUrl}${todo.id}`,
-			type: 'put',
-			dataType: 'json',
+        $.ajax({
+            url: `${this.apiUrl}${todo.id}`,
+            type: 'put',
+            dataType: 'json',
             data: todo,
-			success: function(data) {
-			    var currentTodoIndex = this.state.todos.indexOf(this.state.currentTodo);
-			    this.state.todos.splice(currentTodoIndex, 1, data);
+            success: function(data) {
+                var currentTodoIndex = this.state.todos.indexOf(this.state.currentTodo);
+                this.state.todos.splice(currentTodoIndex, 1, data);
                 this.setState({
                     todos: this.state.todos,
                     currentTodo: data
                 });
-                this.showList(todo.done);
-			}.bind(this)
-		});
+                this.showResidue(todo.done);
+            }.bind(this)
+        });
     }
 
     delete(todo) {
@@ -103,7 +101,7 @@ export default class TodoForm extends React.Component{
                     todos: this.state.todos,
                     isOpening: false
                 });
-                this.showList('');
+                this.showResidue(todo.done);
             }.bind(this)
         });
     }
@@ -115,7 +113,7 @@ export default class TodoForm extends React.Component{
         });
     }
     
-    showList(TOF) {
+    showResidue(TOF) {
         var residue = [];
         if (TOF === ''){
             residue = this.state.todos;
@@ -128,17 +126,16 @@ export default class TodoForm extends React.Component{
         }
         this.setState({
             residue: residue,
-//            isOpening: false
         });
     }
 
-    showEdit() {
+    toggleEdit() {
         this.setState({
             isEditing: !this.state.isEditing
         });
     }
 
-    showAdd() {
+    toggleAdd() {
         this.setState({
             isAdding: !this.state.isAdding
         });
@@ -148,16 +145,16 @@ export default class TodoForm extends React.Component{
         return(
             <div>
                 <TodoFilter
-                    showList={this.showList}/>
+                    showResidue={this.showResidue}/>
                 <NewTodo
                     add={this.add}
                     isAdding={this.state.isAdding}
-                    showAdd={this.showAdd}/>
+                    toggleAdd={this.toggleAdd}/>
                 <TodoList
                     residue={this.state.residue}
                     edit={this.edit}
                     isEditing={this.state.isEditing}
-                    showEdit={this.showEdit}
+                    toggleEdit={this.toggleEdit}
                     isOpening={this.state.isOpening}
                     currentTodo={this.state.currentTodo}
                     showDetail={this.showDetail}

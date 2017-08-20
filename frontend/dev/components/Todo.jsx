@@ -20,7 +20,7 @@ export default class Todo extends React.Component{
         todo.text = this.refs.textInput.value;
         todo.deadline = deadline;
         this.props.edit(todo);
-        this.props.showEdit();
+        this.props.toggleEdit();
     }
 
     toggleDone(todo) {
@@ -44,7 +44,7 @@ export default class Todo extends React.Component{
                     <button
                         onClick={ () => this.toggleDone(todo) }>
                         {toggle}</button>
-                    <button onClick={this.props.showEdit}>Edit</button>
+                    <button onClick={this.props.toggleEdit}>Edit</button>
                     <button onClick={ () => this.props.delete(todo) }>Delete</button>
                 </div>
             );
@@ -60,7 +60,7 @@ export default class Todo extends React.Component{
                         <option value="3">高</option>
                     </select></label>
                     <input type="submit" value="Submit" />
-                    <button onClick={this.props.showEdit}>Cancel</button>
+                    <button onClick={this.props.toggleEdit}>Cancel</button>
                 </form>
             );
         }

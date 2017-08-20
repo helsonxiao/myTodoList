@@ -27,7 +27,7 @@ export default class TodoList extends React.Component{
                         edit={this.props.edit}
                         delete={this.props.delete}
                         isEditing={this.props.isEditing}
-                        showEdit={this.props.showEdit}/>
+                        toggleEdit={this.props.toggleEdit}/>
                 </div>
             );
         } else {

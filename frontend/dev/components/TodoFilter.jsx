@@ -10,15 +10,15 @@ export default class TodoFilter extends React.Component{
     }
     
     handleAll() {
-        this.props.showList('');
+        this.props.showResidue('');
     }
     
     handleTodo() {
-        this.props.showList(false);
+        this.props.showResidue(false);
     }
     
     handleCompleted() {
-        this.props.showList(true);
+        this.props.showResidue(true);
     }
     
     render() {

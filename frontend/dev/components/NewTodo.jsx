@@ -9,7 +9,7 @@ export default class NewTodo extends React.Component{
     }
 
     handleClick() {
-        this.props.showAdd();
+        this.props.toggleAdd();
     }
 
     handleSubmit(event) {
@@ -45,7 +45,7 @@ export default class NewTodo extends React.Component{
                         <option value="3">紧急</option>
                     </select>
                     <input type="submit" value="Submit" />
-                    <button onClick={this.props.showAdd}>Cancel</button>
+                    <button onClick={this.props.toggleAdd}>Cancel</button>
                 </form>
             );
         }
