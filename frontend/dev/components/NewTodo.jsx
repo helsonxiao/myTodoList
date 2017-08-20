@@ -27,7 +27,6 @@ export default class NewTodo extends React.Component{
             "text": this.refs.textInput.value,
             "deadline": deadline
         };
-        console.log(newTodo);
         this.props.add(newTodo);
     }
 

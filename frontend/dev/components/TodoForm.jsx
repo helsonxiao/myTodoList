@@ -33,7 +33,6 @@ export default class TodoForm extends React.Component{
 			url: this.apiUrl,
 			type: 'get',
 			dataType: 'json',
-//			async: false,
 			success: function(data) {
                 this.setState({
                     residue: data,
@@ -57,22 +56,21 @@ export default class TodoForm extends React.Component{
             url: this.apiUrl,
             type: 'post',
             dataType: 'json',
-            async: false,
             data: newTodo,
             success: function(data) {
-                console.log(data);
+                // 必须用 data ，否则缺少 id
                 this.state.todos.push(data);
                 this.setState({
                     todos: this.state.todos,
                     isOpening: false,
                     isAdding: false
                 });
+                this.showList(false);
             }.bind(this),
             error: function() {
                 console.log('add err!')
             }.bind(this)
         });
-        this.showList(false);
     }
 
     edit(todo) {
@@ -80,23 +78,29 @@ export default class TodoForm extends React.Component{
 			url: `${this.apiUrl}${todo.id}`,
 			type: 'put',
 			dataType: 'json',
-            async: false,
             data: todo,
 			success: function(data) {
                 this.setState({
                     isOpening: false
                 });
+                this.showList(todo.done);
 			}.bind(this)
 		});
-        this.showList(todo.done);
-        console.log(todo);
     }
 
     delete(todo) {
         $.ajax({
             url: `${this.apiUrl}${todo.id}`,
             type: 'delete',
-
+            success: function() {
+                var todoIndex = this.state.todos.indexOf(todo);
+                this.state.todos.splice(todoIndex, 1);
+                this.setState({
+                    todos: this.state.todos,
+                    isOpening: false
+                });
+                this.showList('');
+            }.bind(this)
         });
     }
 
@@ -153,7 +157,8 @@ export default class TodoForm extends React.Component{
                     isOpening={this.state.isOpening}
                     currentId={this.state.currentId}
                     showDetail={this.showDetail}
-                    load={this.load}/>
+                    load={this.load}
+                    delete={this.delete}/>
             </div>
         );
     }
