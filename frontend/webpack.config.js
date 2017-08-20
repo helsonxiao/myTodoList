@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './dev/TodoApp',
+    entry: './dev/containers/AppContainer',
 
     output: {
         filename: 'bundle.js',
