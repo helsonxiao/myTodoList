@@ -62,7 +62,9 @@ export default class TodoForm extends React.Component{
                 this.state.todos.push(data);
                 this.setState({
                     todos: this.state.todos,
-                    isAdding: false
+                    isAdding: false,
+                    isOpening: true,
+                    currentTodo: data
                 });
                 this.showList(false);
             }.bind(this),
