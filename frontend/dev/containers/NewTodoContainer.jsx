@@ -5,11 +5,12 @@ export default class NewTodoContainer extends React.Component{
     constructor(props){
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
     }
 
-    handleClick() {
+    handleAdd() {
         this.props.toggleAdd();
+        this.props.hideDetail();
     }
 
     handleSubmit(event, refs) {
@@ -35,7 +36,7 @@ export default class NewTodoContainer extends React.Component{
         return (
             <NewTodo
                 isAdding={this.props.isAdding}
-                handleClick={this.handleClick}
+                handleAdd={this.handleAdd}
                 handleSubmit={this.handleSubmit}
                 toggleAdd={this.props.toggleAdd}/>
         );

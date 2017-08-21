@@ -26,6 +26,7 @@ class AppContainer extends React.Component{
         this.showResidue = this.showResidue.bind(this);
         this.toggleAdd = this.toggleAdd.bind(this);
         this.toggleEdit = this.toggleEdit.bind(this);
+        this.hideDetail = this.hideDetail.bind(this);
     }
 
     load() {
@@ -89,7 +90,8 @@ class AppContainer extends React.Component{
         });
     }
 
-    delete(currentTodo) {
+    delete() {
+        var currentTodo=this.state.currentTodo;
         $.ajax({
             url: `${this.apiUrl}${currentTodo.id}`,
             type: 'delete',
@@ -100,7 +102,7 @@ class AppContainer extends React.Component{
                     todos: this.state.todos,
                     isOpening: false
                 });
-                this.showResidue(currentTodo.done);
+                this.showResidue('');
             }.bind(this)
         });
     }
@@ -139,6 +141,12 @@ class AppContainer extends React.Component{
             isAdding: !this.state.isAdding
         });
     }
+    
+    hideDetail() {
+        this.setState({
+            isOpening: false
+        });
+    }
 
     render() {
         return(
@@ -148,7 +156,8 @@ class AppContainer extends React.Component{
                 <NewTodoContainer
                     add={this.add}
                     isAdding={this.state.isAdding}
-                    toggleAdd={this.toggleAdd}/>
+                    toggleAdd={this.toggleAdd}
+                    hideDetail={this.hideDetail}/>
                 <TodoListContainer
                     residue={this.state.residue}
                     showDetail={this.showDetail}/>

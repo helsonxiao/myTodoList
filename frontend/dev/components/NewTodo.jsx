@@ -7,7 +7,7 @@ export default class NewTodo extends React.Component{
 
     render() {
         if (!this.props.isAdding){
-            return <button onClick={this.props.handleClick}>Add</button>
+            return <button onClick={this.props.handleAdd}>Add</button>
         } else {
             return (
                 <form onSubmit={ () => this.props.handleSubmit(event, this.refs) }>

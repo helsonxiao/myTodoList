@@ -8,8 +8,9 @@ export default class TodoContainer extends React.Component{
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(event, currentTodo, refs) {
+    handleSubmit(event, refs) {
         event.preventDefault();
+        var currentTodo = this.props.currentTodo;
         if (refs.deadlineInput.value === "") {
             var deadline = null;
         } else {
@@ -24,7 +25,8 @@ export default class TodoContainer extends React.Component{
         this.props.toggleEdit();
     }
 
-    toggleDone(currentTodo) {
+    toggleDone() {
+        var currentTodo = this.props.currentTodo;
         currentTodo.done = !currentTodo.done;
         this.props.edit(currentTodo);
     }
