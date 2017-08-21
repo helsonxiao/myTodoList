@@ -119,11 +119,7 @@ class AppContainer extends React.Component{
         if (TOF === ''){
             residue = this.state.todos;
         } else {
-            this.state.todos.map( (todo) => {
-                if (todo.done === TOF){
-                    residue.push(todo);
-                }
-            });
+            residue = this.state.todos.filter((todo) => todo.done === TOF);
         }
         this.setState({
             residue: residue,
