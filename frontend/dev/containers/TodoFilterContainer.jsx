@@ -1,8 +1,6 @@
 import React from 'react';
 import TodoFilter from '../components/TodoFilter';
-import { observer } from 'mobx-react';
 
-@observer
 export default class TodoFilterContainer extends React.Component{
     render() {
         return(
