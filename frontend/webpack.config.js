@@ -17,16 +17,32 @@ module.exports = {
         port: 3000
     },
 
+//    module: {
+//        loaders: [
+//            {
+//                loader: 'babel-loader',
+//                test: /\.jsx?$/,
+//                //node_modules would take a long time
+//                exclude: /node_modules/,
+//                options: {
+//                    //specify that we will be dealing with React code
+//                    presets: ['react']
+//                }
+//            }
+//        ]
+//    },
+
     module: {
-        loaders: [
+        rules: [
             {
-                loader: 'babel-loader',
                 test: /\.jsx?$/,
-                //node_modules would take a long time
                 exclude: /node_modules/,
-                options: {
-                    //specify that we will be dealing with React code
-                    presets: ['react']
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['env', 'react'],
+                        plugins: ['transform-decorators-legacy']
+                    }
                 }
             }
         ]
@@ -34,8 +50,8 @@ module.exports = {
 
     resolve: {
         //tells webpack where to look for modules
-        modules: ['node_modules'],
+//        modules: ['node_modules'],
         //extensions that should be used to resolve modules
         extensions: ['.js', '.jsx']
-    },
+    }
 };
