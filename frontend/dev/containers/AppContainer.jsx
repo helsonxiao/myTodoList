@@ -5,40 +5,34 @@ import TodoFilterContainer from './TodoFilterContainer';
 import NewTodoContainer from './NewTodoContainer';
 import TodoListContainer from './TodoListContainer';
 import TodoContainer from './TodoContainer';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 
+var appState = observable({
+    residue: [],
+    todos: [],
+    isOpening: false,
+    isAdding: false,
+    isEditing: false,
+    currentTodo: {}
+});
+
+@observer
 class AppContainer extends React.Component{
     constructor(props) {
         super(props);
-        this.apiUrl = 'http://127.0.0.1:8000/api/tasks/';
-        this.state = {
-            residue: [],
-            todos: [],
-            isOpening: false,
-            isAdding: false,
-            isEditing: false,
-            currentTodo: {}
-        }
         this.load = this.load.bind(this);
-        this.add = this.add.bind(this);
-        this.edit = this.edit.bind(this);
-        this.delete = this.delete.bind(this);
-        this.showDetail = this.showDetail.bind(this);
         this.showResidue = this.showResidue.bind(this);
-        this.toggleAdd = this.toggleAdd.bind(this);
-        this.toggleEdit = this.toggleEdit.bind(this);
-        this.hideDetail = this.hideDetail.bind(this);
     }
 
     load() {
         $.ajax({
-            url: this.apiUrl,
+            url: 'http://127.0.0.1:8000/api/tasks/',
             type: 'get',
             dataType: 'json',
             success: function(data) {
-                this.setState({
-                    residue: data,
-                    todos: data
-                });
+                this.props.appState.residue = data;
+                this.props.appState.todos = data;
             }.bind(this),
             error: function() {
                 console.log('load err!');
@@ -50,98 +44,12 @@ class AppContainer extends React.Component{
         this.load();
     }
 
-    add(newTodo) {
-        $.ajax({
-            url: this.apiUrl,
-            type: 'post',
-            dataType: 'json',
-            data: newTodo,
-            success: function(data) {
-                // 必须用 data ，否则缺少 id
-                this.state.todos.push(data);
-                this.setState({
-                    todos: this.state.todos,
-                    isOpening: true,
-                    currentTodo: data
-                });
-                this.showResidue(newTodo.done);
-            }.bind(this),
-            error: function() {
-                console.log('add err!')
-            }.bind(this)
-        });
-    }
-
-    edit(currentTodo) {
-        $.ajax({
-            url: `${this.apiUrl}${currentTodo.id}`,
-            type: 'put',
-            dataType: 'json',
-            data: currentTodo,
-            success: function(data) {
-                var currentTodoIndex = this.state.todos.indexOf(currentTodo);
-                this.state.todos.splice(currentTodoIndex, 1, data);
-                this.setState({
-                    todos: this.state.todos,
-                    currentTodo: data
-                });
-                this.showResidue(currentTodo.done);
-            }.bind(this)
-        });
-    }
-
-    delete() {
-        var currentTodo=this.state.currentTodo;
-        $.ajax({
-            url: `${this.apiUrl}${currentTodo.id}`,
-            type: 'delete',
-            success: function() {
-                var currentTodoIndex = this.state.todos.indexOf(currentTodo);
-                this.state.todos.splice(currentTodoIndex, 1);
-                this.setState({
-                    todos: this.state.todos,
-                    isOpening: false
-                });
-                this.showResidue('');
-            }.bind(this)
-        });
-    }
-
-    showDetail(currentTodo) {
-        this.setState({
-            isOpening: true,
-            currentTodo: currentTodo
-        });
-    }
-
     showResidue(TOF) {
-        var residue = [];
         if (TOF === ''){
-            residue = this.state.todos;
+            this.props.appState.residue = this.props.appState.todos;
         } else {
-            residue = this.state.todos.filter((todo) => todo.done === TOF);
+            this.props.appState.residue = this.props.appState.todos.filter((todo) => todo.done === TOF);
         }
-        this.setState({
-            residue: residue,
-        });
-    }
-
-    toggleEdit() {
-        this.setState({
-            isEditing: !this.state.isEditing
-        });
-    }
-
-    toggleAdd() {
-        this.setState({
-            isAdding: !this.state.isAdding
-        });
-    }
-    
-    hideDetail() {
-        this.setState({
-            isOpening: false
-        });
     }
 
     render() {
@@ -150,26 +58,19 @@ class AppContainer extends React.Component{
                 <TodoFilterContainer
                     showResidue={this.showResidue}/>
                 <NewTodoContainer
-                    add={this.add}
-                    isAdding={this.state.isAdding}
-                    toggleAdd={this.toggleAdd}
-                    hideDetail={this.hideDetail}/>
+                    appState={this.props.appState}
+                    showResidue={this.showResidue}/>
                 <TodoListContainer
-                    residue={this.state.residue}
-                    showDetail={this.showDetail}/>
+                    appState={this.props.appState}/>
                 <TodoContainer
-                    isOpening={this.state.isOpening}
-                    currentTodo={this.state.currentTodo}
-                    isEditing={this.state.isEditing}
-                    toggleEdit={this.toggleEdit}
-                    delete={this.delete}
-                    edit={this.edit}/>
+                    appState={this.props.appState}
+                    showResidue={this.showResidue}/>
             </div>
         );
     }
 }
 
 ReactDOM.render(
-    <AppContainer />,
+    <AppContainer appState={appState}/>,
     document.getElementById('app')
 );

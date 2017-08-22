@@ -1,13 +1,11 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 
+@observer
 export default class NewTodo extends React.Component{
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        if (!this.props.isAdding){
-            return <button onClick={this.props.handleAdd}>Add</button>
+        if (!this.props.appState.isAdding){
+            return <button onClick={this.props.handleAddClick}>Add</button>
         } else {
             return (
                 <form onSubmit={ () => this.props.handleSubmit(event, this.refs) }>
@@ -20,7 +18,7 @@ export default class NewTodo extends React.Component{
                         <option value="3">紧急</option>
                     </select>
                     <input type="submit" value="Submit" />
-                    <button onClick={this.props.toggleAdd}>Cancel</button>
+                    <button onClick={() => {this.props.appState.isAdding=false}}>Cancel</button>
                 </form>
             );
         }
