@@ -39,7 +39,8 @@ export default class TodoContainer extends React.Component{
                 var currentTodoIndex = this.props.appState.todos.indexOf(data);
                 this.props.appState.todos.splice(currentTodoIndex, 1, data);
                 this.props.appState.isEditing = false;
-                this.props.showResidue(data.done);
+                // arg should be like this because of async
+                this.props.showResidue(currentTodo.done);
             }.bind(this)
         });
     }

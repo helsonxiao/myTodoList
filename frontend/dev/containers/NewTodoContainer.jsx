@@ -21,6 +21,7 @@ export default class NewTodoContainer extends React.Component{
                 this.props.appState.todos.push(data);
                 this.props.appState.currentTodo = data;
                 this.props.appState.isOpening = true;
+                // arg should be like this because of async
                 this.props.showResidue(newTodo.done);
             }.bind(this),
             error: function() {
