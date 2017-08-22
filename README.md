@@ -1,14 +1,14 @@
 # TodoList
 基于上一版 [FlagList](https://github.com/helsonxiao/flaglist) 更改，前后端分离。
 
-请使用两个命令行窗口，分别进入前后端文件夹。
+请使用两个命令行窗口，分别进入前后端文件夹运行。
 
 > The frontend and backend are completely decoupled and can be developed in parallel.
 
 ## Todo
-* 加入 MobX/Redux
+* ~~加入 MobX~~
 * 替换 ProgreSQL
-* 完善实际功能
+* 增加不同排序方式
 * 用户注册
 * API 权限管理
 
