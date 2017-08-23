@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import TodoFilterContainer from './TodoFilterContainer';
-import NewTodoContainer from './NewTodoContainer';
+import TodoBarContainer from './TodoBarContainer';
 import TodoListContainer from './TodoListContainer';
 import TodoContainer from './TodoContainer';
 import { observable } from 'mobx';
@@ -14,7 +14,7 @@ var appState = observable({
     isOpening: false,
     isAdding: false,
     isEditing: false,
-    currentTodo: {}
+    currentTodo: {},
 });
 
 @observer
@@ -40,7 +40,7 @@ class AppContainer extends React.Component{
         });
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.load();
     }
 
@@ -57,9 +57,8 @@ class AppContainer extends React.Component{
             <div>
                 <TodoFilterContainer
                     showResidue={this.showResidue}/>
-                <NewTodoContainer
-                    appState={this.props.appState}
-                    showResidue={this.showResidue}/>
+                <TodoBarContainer
+                    appState={this.props.appState}/>
                 <TodoListContainer
                     appState={this.props.appState}/>
                 <TodoContainer
