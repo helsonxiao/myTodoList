@@ -20,19 +20,21 @@ export default class Todo extends React.Component{
             );
         } else {
             return (
-                <form onSubmit={() => this.props.handleSubmit(event, this.refs)}>
-                    <label>标题：<input type="text" defaultValue={currentTodo.title} ref="titleInput" /></label>
-                    <label>内容：<input type="text" defaultValue={currentTodo.text} ref="textInput" /></label>
-                    <label>截止日期：<input type="date" defaultValue={currentTodo.deadline} ref="deadlineInput" /></label>
-                    <label>优先级：<select ref="priorityInput">
+                <form onSubmit={() => this.props.handleEditSubmit(event, this.refs)}>
+                    <label>标题：</label>
+                    <input type="text" defaultValue={currentTodo.title} ref="titleInput" /><br />
+                    <label>内容：</label>
+                    <input type="text" defaultValue={currentTodo.text} ref="textInput" /><br />
+                    <label>截止日期：</label>
+                    <input type="date" defaultValue={currentTodo.deadline} ref="deadlineInput" /><br />
+                    <label>优先级：</label>
+                    <select ref="priorityInput">
                         <option value="1">低</option>
                         <option value="2">中</option>
                         <option value="3">高</option>
-                    </select></label>
+                    </select><br />
                     <input type="submit" value="Submit" />
-                    <button
-                        onClick={() => {this.props.appState.isEditing=false}}>
-                        Cancel</button>
+                    <button onClick={() => {this.props.appState.isEditing=false}}>Cancel</button>
                 </form>
             );
         }
