@@ -7,16 +7,23 @@ export default class Todo extends React.Component{
         var currentTodo = this.props.appState.currentTodo;
         if (!this.props.appState.isEditing) {
             return (
-                <div>
-                    <h4>标题：{currentTodo.title}</h4>
+                <div className="panel panel-default">
+                  <div className="panel-heading">
+                    <h3 className="panel-title">{currentTodo.title}</h3>
+                  </div>
+                  <div className="panel-body">
                     <p>内容：{currentTodo.text}</p>
                     <p>优先级：{currentTodo.priority}</p>
                     <p>截止日期：{currentTodo.deadline}</p>
                     <button
+                        className="btn btn-default"
                         onClick={this.props.toggleDone}>
                         {this.props.markAction}</button>
-                    <button onClick={() => {this.props.appState.isEditing=true}}>Edit</button>
-                    <button onClick={this.props.delete}>Delete</button>
+                    <button className="btn btn-default"
+                        onClick={() => {this.props.appState.isEditing=true}}>Edit</button>
+                    <button className="btn btn-default"
+                        onClick={this.props.delete}>Delete</button>
+                  </div>
                 </div>
             );
         } else {

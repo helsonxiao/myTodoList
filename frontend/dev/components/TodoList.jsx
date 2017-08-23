@@ -4,6 +4,10 @@ import { observer } from 'mobx-react';
 @observer
 export default class TodoList extends React.Component{
     render() {
-        return <ul>{this.props.titles}</ul>
+        return (
+            <div className="list-group">
+                {this.props.titles}
+            </div>
+        );
     }
 }
