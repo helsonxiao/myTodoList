@@ -1,18 +1,94 @@
 import React from 'react';
 import Todo from '../components/Todo';
+import NewTodo from '../components/NewTodo';
 import { observer } from 'mobx-react';
 
 @observer
 export default class TodoContainer extends React.Component{
     constructor(props) {
         super(props);
+        // newTodo
+        this.add = this.add.bind(this);
+        this.handleAddSubmit = this.handleAddSubmit.bind(this);
+        // currentTodo
         this.toggleDone = this.toggleDone.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleEditSubmit = this.handleEditSubmit.bind(this);
         this.edit = this.edit.bind(this);
         this.delete = this.delete.bind(this);
     }
 
-    handleSubmit(event, refs) {
+    add(newTodo) {
+        $.ajax({
+            url: 'http://127.0.0.1:8000/api/tasks/',
+            type: 'post',
+            dataType: 'json',
+            data: newTodo,
+            success: function(data) {
+                this.props.appState.todos.push(data);
+                this.props.appState.currentTodo = data;
+                this.props.showResidue(data.done);
+            }.bind(this),
+            error: function() {
+                console.log('add err!')
+            }.bind(this)
+        });
+    this.props.appState.isAdding = false;
+    this.props.appState.isOpening = true;
+    }
+
+    handleAddSubmit(event, refs) {
+        event.preventDefault();
+        if (refs.deadlineInput.value === "") {
+            var deadline = null;
+        } else {
+            var deadline = refs.deadlineInput.value;
+        }
+        var priority = refs.priorityInput.value;
+        var newTodo = {
+            "title": refs.titleInput.value,
+            "priority": priority,
+            "done": false,
+            "text": refs.textInput.value,
+            "deadline": deadline
+        };
+        this.add(newTodo);
+    }
+
+/**************************************************************/
+
+    edit() {
+        var currentTodo = this.props.appState.currentTodo;
+        var prevTodo = this.props.appState.todos.find(todo => todo.id === currentTodo.id);
+        var prevTodoIndex = this.props.appState.todos.indexOf(prevTodo);
+        this.props.appState.todos.splice(prevTodoIndex, 1, currentTodo);
+        this.props.appState.isEditing = false;
+        this.props.showResidue(currentTodo.done);
+        $.ajax({
+            url: `http://127.0.0.1:8000/api/tasks/${currentTodo.id}`,
+            type: 'put',
+            dataType: 'json',
+            data: currentTodo,
+        });
+    }
+
+    delete() {
+        var currentTodo = this.props.appState.currentTodo;
+        var currentTodoIndex = this.props.appState.todos.indexOf(currentTodo);
+        this.props.appState.todos.splice(currentTodoIndex, 1);
+        this.props.appState.isOpening = false;
+        this.props.showResidue('');
+        $.ajax({
+            url: `http://127.0.0.1:8000/api/tasks/${currentTodo.id}`,
+            type: 'delete',
+        });
+    }
+
+    toggleDone() {
+        this.props.appState.currentTodo.done = !this.props.appState.currentTodo.done;
+        this.edit();
+    }
+
+    handleEditSubmit(event, refs) {
         event.preventDefault();
         var currentTodo = this.props.appState.currentTodo;
         if (refs.deadlineInput.value === "") {
@@ -28,44 +104,14 @@ export default class TodoContainer extends React.Component{
         this.edit();
     }
 
-    edit() {
-        var currentTodo = this.props.appState.currentTodo;
-        $.ajax({
-            url: `http://127.0.0.1:8000/api/tasks/${currentTodo.id}`,
-            type: 'put',
-            dataType: 'json',
-            data: currentTodo,
-            success: function(data) {
-                var currentTodoIndex = this.props.appState.todos.indexOf(data);
-                this.props.appState.todos.splice(currentTodoIndex, 1, data);
-                this.props.appState.isEditing = false;
-                // arg should be like this because of async
-                this.props.showResidue(currentTodo.done);
-            }.bind(this)
-        });
-    }
-
-    delete() {
-        var currentTodo = this.props.appState.currentTodo;
-        $.ajax({
-            url: `http://127.0.0.1:8000/api/tasks/${currentTodo.id}`,
-            type: 'delete',
-            success: function() {
-                var currentTodoIndex = this.props.appState.todos.indexOf(currentTodo);
-                this.props.appState.todos.splice(currentTodoIndex, 1);
-                this.props.appState.isOpening = false;
-                this.props.showResidue('');
-            }.bind(this)
-        });
-    }
-
-    toggleDone() {
-        this.props.appState.currentTodo.done = !this.props.appState.currentTodo.done;
-        this.edit();
-    }
-
     render() {
-        if (this.props.appState.isOpening) {
+        if (this.props.appState.isAdding) {
+            return (
+                <NewTodo
+                    appState={this.props.appState}
+                    handleAddSubmit={this.handleAddSubmit}/>
+            );
+        } else if (this.props.appState.isOpening) {
             if (this.props.appState.currentTodo.done) {
                 var markAction = 'Mark as not done';
             } else {
@@ -77,7 +123,7 @@ export default class TodoContainer extends React.Component{
                     appState={this.props.appState}
                     delete={this.delete}
                     toggleDone={this.toggleDone}
-                    handleSubmit={this.handleSubmit}/>
+                    handleEditSubmit={this.handleEditSubmit}/>
             );
         }
         return null;
