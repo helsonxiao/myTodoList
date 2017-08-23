@@ -8,9 +8,10 @@ export default class Todo extends React.Component{
         if (!this.props.appState.isEditing) {
             return (
                 <div>
-                    <h4>{currentTodo.title}</h4>
-                    <p>{currentTodo.text}</p>
-                    <p>{currentTodo.deadline}</p>
+                    <h4>标题：{currentTodo.title}</h4>
+                    <p>内容：{currentTodo.text}</p>
+                    <p>优先级：{currentTodo.priority}</p>
+                    <p>截止日期：{currentTodo.deadline}</p>
                     <button
                         onClick={this.props.toggleDone}>
                         {this.props.markAction}</button>
