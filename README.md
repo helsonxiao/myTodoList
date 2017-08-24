@@ -5,12 +5,18 @@
 
 > The frontend and backend are completely decoupled and can be developed in parallel.
 
+## Gif
+![add and toggle](https://github.com/helsonxiao/myTodoList/blob/master/gif/Screen%20Recording%202017-08-24%20at%2010.36.gif)
+
+![sort by 2 ways](https://github.com/helsonxiao/myTodoList/blob/master/gif/Screen%20Recording%202017-08-24%20at%2010.37.gif)
 ## Todo
 * ~~加入 MobX~~
 * 替换 ProgreSQL
-* 增加不同排序方式
+* ~~增加不同排序方式~~
 * 用户注册
 * API 权限管理
+* 错误检查
+* UI 美化
 
 ## References
 * [Django Rest Framework + React](https://github.com/geezhawk/drf-react)
