@@ -5,7 +5,8 @@ import { observer } from 'mobx-react';
 export default class NewTodo extends React.Component{
     render() {
         return (
-            <form onSubmit={() => this.props.handleAddSubmit(event, this.refs)}>
+            <form className='new-todo'
+                onSubmit={() => this.props.handleAddSubmit(event, this.refs)}>
                 <label>标题：</label>
                 <input type="text" name="Title" ref="titleInput" /><br />
                 <label>内容：</label>

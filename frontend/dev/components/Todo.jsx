@@ -28,7 +28,8 @@ export default class Todo extends React.Component{
             );
         } else {
             return (
-                <form onSubmit={() => this.props.handleEditSubmit(event, this.refs)}>
+                <form className='edit-todo'
+                    onSubmit={() => this.props.handleEditSubmit(event, this.refs)}>
                     <label>标题：</label>
                     <input type="text" defaultValue={currentTodo.title} ref="titleInput" /><br />
                     <label>内容：</label>

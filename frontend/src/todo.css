@@ -1,12 +1,25 @@
+.navbar-default {
+    width: 70%;
+    margin-left: 15%;
+}
+
+.navbar-header {
+    margin-left: 2%;
+}
+
+.navbar-nav {
+    margin-left: 25%;
+}
+
 .btn-group-vertical {
     position: absolute;
-    margin-left: 3%;
+    margin-left: 15%;
 }
 
 .list-group {
     display: inline-block;
     width: 20%;
-    margin-left: 11%;
+    margin-left: 38%;
 }
 
 button.list-group-item {
@@ -16,5 +29,18 @@ button.list-group-item {
 .panel {
     position: absolute;
     display: inline-block;
+    margin-left: 4%;
+}
+
+.new-todo {
+    position: absolute;
+    display: inline-block;
     margin-left: 2%;
 }
+
+.edit-todo {
+    position: absolute;
+    display: inline-block;
+    margin-left: 2%;
+}
+
