@@ -13,10 +13,9 @@ class Task(models.Model):
         (HIGH, 'High'),
     )
     priority = models.CharField(choices=PRIORITY_CHOICES, default=LOW, max_length=100)
-    title = models.CharField(max_length=120)
+    content = models.CharField(max_length=120)
     birthday = models.DateField(auto_now_add=True)
     deadline = models.DateField(blank=True, null=True)
-    text = models.TextField()
     done = models.BooleanField(default=False, blank=True)
     
     def __unicode__(self):
