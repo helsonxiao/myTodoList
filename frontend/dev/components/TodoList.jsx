@@ -6,7 +6,7 @@ export default class TodoList extends React.Component{
     render() {
         return (
             <div className="list-group">
-                {this.props.titles}
+                {this.props.todos}
             </div>
         );
     }

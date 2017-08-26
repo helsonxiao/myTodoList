@@ -7,10 +7,8 @@ export default class NewTodo extends React.Component{
         return (
             <form className='new-todo'
                 onSubmit={() => this.props.handleAddSubmit(event, this.refs)}>
-                <label>标题：</label>
-                <input type="text" name="Title" ref="titleInput" /><br />
                 <label>内容：</label>
-                <input type="text" name="Text" ref="textInput" /><br />
+                <input type="text" name="Content" ref="contentInput" /><br />
                 <label>截止日期：</label>
                 <input type="date" name="Deadline" ref="deadlineInput" /><br />
                 <label>优先级：</label>

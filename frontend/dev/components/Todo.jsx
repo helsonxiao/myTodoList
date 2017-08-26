@@ -9,10 +9,9 @@ export default class Todo extends React.Component{
             return (
                 <div className="panel panel-default">
                   <div className="panel-heading">
-                    <h3 className="panel-title">{currentTodo.title}</h3>
+                    <h3 className="panel-title">{currentTodo.content}</h3>
                   </div>
                   <div className="panel-body">
-                    <p>内容：{currentTodo.text}</p>
                     <p>优先级：{currentTodo.priority}</p>
                     <p>截止日期：{currentTodo.deadline}</p>
                     <button
@@ -30,10 +29,8 @@ export default class Todo extends React.Component{
             return (
                 <form className='edit-todo'
                     onSubmit={() => this.props.handleEditSubmit(event, this.refs)}>
-                    <label>标题：</label>
-                    <input type="text" defaultValue={currentTodo.title} ref="titleInput" /><br />
                     <label>内容：</label>
-                    <input type="text" defaultValue={currentTodo.text} ref="textInput" /><br />
+                    <input type="text" defaultValue={currentTodo.content} ref="contentInput" /><br />
                     <label>截止日期：</label>
                     <input type="date" defaultValue={currentTodo.deadline} ref="deadlineInput" /><br />
                     <label>优先级：</label>

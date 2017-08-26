@@ -45,10 +45,9 @@ export default class TodoContainer extends React.Component{
         }
         var priority = refs.priorityInput.value;
         var newTodo = {
-            "title": refs.titleInput.value,
+            "content": refs.contentInput.value,
             "priority": priority,
             "done": false,
-            "text": refs.textInput.value,
             "deadline": deadline
         };
         this.add(newTodo);
@@ -97,9 +96,8 @@ export default class TodoContainer extends React.Component{
             var deadline = refs.deadlineInput.value;
         }
         var priority = refs.priorityInput.value;
-        currentTodo.title = refs.titleInput.value;
+        currentTodo.content = refs.contentInput.value;
         currentTodo.priority = priority;
-        currentTodo.text = refs.textInput.value;
         currentTodo.deadline = deadline;
         this.edit();
     }

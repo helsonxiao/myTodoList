@@ -15,14 +15,14 @@ export default class TodoListContainer extends React.Component{
     }
 
     render() {
-        var titles = this.props.appState.residue.map((todo) => {
+        var todos = this.props.appState.residue.map((todo) => {
            return (
                <button type="button" className="list-group-item"
                 key={todo.id}
                 onClick={() => this.showDetail(todo)}>
-                {todo.title}</button>
+                {todo.content}</button>
             );
         });
-        return <TodoList titles={titles}/>
+        return <TodoList todos={todos}/>
     }
 }
