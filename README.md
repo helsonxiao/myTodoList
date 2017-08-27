@@ -11,7 +11,7 @@
 ![sort by 2 ways](https://github.com/helsonxiao/myTodoList/blob/master/gif/Screen%20Recording%202017-08-24%20at%2010.37.gif)
 ## Todo
 * ~~加入 MobX~~
-* 替换 ProgreSQL
+* ~~替换 PostgreSQL~~
 * ~~增加不同排序方式~~
 * 用户注册
 * API 权限管理
