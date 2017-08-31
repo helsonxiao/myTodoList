@@ -71,15 +71,17 @@ export default class TodoContainer extends React.Component{
     }
 
     delete() {
-        var currentTodo = this.props.appState.currentTodo;
-        var currentTodoIndex = this.props.appState.todos.indexOf(currentTodo);
-        this.props.appState.todos.splice(currentTodoIndex, 1);
-        this.props.appState.isOpening = false;
-        this.props.showResidue('');
-        $.ajax({
-            url: `http://127.0.0.1:8000/api/tasks/${currentTodo.id}`,
-            type: 'delete',
-        });
+        var msg = "Sure to delete?";
+        if (confirm(msg) === true) {
+            var currentTodo = this.props.appState.currentTodo;
+            this.props.appState.todos = this.props.appState.todos.filter(todo => todo.id !== currentTodo.id);
+            this.props.appState.isOpening = false;
+            this.props.showResidue('');
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/tasks/${currentTodo.id}`,
+                type: 'delete',
+            });
+        }
     }
 
     toggleDone() {
