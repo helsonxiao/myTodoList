@@ -38,19 +38,24 @@ export default class TodoContainer extends React.Component{
 
     handleAddSubmit(event, refs) {
         event.preventDefault();
-        if (refs.deadlineInput.value === "") {
-            var deadline = null;
+        if (refs.contentInput.value) {
+            if (refs.deadlineInput.value === "") {
+                var deadline = null;
+            } else {
+                var deadline = refs.deadlineInput.value;
+            }
+            var priority = refs.priorityInput.value;
+            var newTodo = {
+                "content": refs.contentInput.value,
+                "priority": priority,
+                "done": false,
+                "deadline": deadline
+            };
+            this.add(newTodo);
         } else {
-            var deadline = refs.deadlineInput.value;
+            alert('invalid content!');
+            return false;
         }
-        var priority = refs.priorityInput.value;
-        var newTodo = {
-            "content": refs.contentInput.value,
-            "priority": priority,
-            "done": false,
-            "deadline": deadline
-        };
-        this.add(newTodo);
     }
 
 /**************************************************************/
