@@ -18,6 +18,8 @@
 * 错误检查
 * UI 美化
 
+![](https://github.com/helsonxiao/myTodoList/blob/8dabdbe98d31fd285222f4b316cf41b87cc6e352/gif/todoList.png)
+
 ## References
 * [Django Rest Framework + React](https://github.com/geezhawk/drf-react)
 * [TodoList-v1](https://github.com/kiki0805/TodoList-v1) (BIG THANKS!)
